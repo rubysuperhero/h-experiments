@@ -1,0 +1,5 @@
+# hiro experiments installation config
+# used by h-install
+
+bin:
+  bin/h-experiments
