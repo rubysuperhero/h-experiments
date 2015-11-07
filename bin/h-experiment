@@ -35,7 +35,7 @@ module MainCommand
   end
 
   def templates_path
-    File.join(ENV['HOME'], 'templates')
+    File.join(ENV['HOME'], 'hero', 'templates')
   end
 
   def experiments_path(sub=nil)
@@ -47,15 +47,17 @@ module MainCommand
     when 'r', 'ruby'
       dir = experiments_path 'ruby'
       FileUtils.mkdir_p(dir)
-      args = [Time.now.strftime('%Y%m%d%H%M%S')] if args.count == 0
-      file = File.join(dir, args.join('_').gsub(/\W+/, ?_).sub(/([.]rb)?$/i, '.rb'))
-      FileUtils.cp_v(File.join(templates_path, 'experiment.rb'), file)
+      @args = [Time.now.strftime('%Y%m%d%H%M%S')] if @args.count == 0
+      file = File.join(dir, @args.join('_').gsub(/\W+/, ?_).sub(/([.]rb)?$/i, '.rb'))
+      FileUtils.cp(File.join(templates_path, 'experiment.rb'), file)
+      system('vim', file)
     when 's', 'sh', 'shell', 'bash', 'zsh'
       dir = experiments_path 'bash'
       FileUtils.mkdir_p(dir)
-      args = [Time.now.strftime('%Y%m%d%H%M%S')] if args.count == 0
-      file = File.join(dir, args.join('_').gsub(/\W+/, ?_).sub(/([.]sh)?$/i, '.sh'))
-      FileUtils.cp_v(File.join(templates_path, 'experiment.sh'), file)
+      @args = [Time.now.strftime('%Y%m%d%H%M%S')] if @args.count == 0
+      file = File.join(dir, @args.join('_').gsub(/\W+/, ?_).sub(/([.]sh)?$/i, '.sh'))
+      FileUtils.cp(File.join(templates_path, 'experiment.sh'), file)
+      system('vim', file)
     when 'h', 'help'
       run_help
     else
